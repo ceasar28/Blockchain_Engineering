@@ -59,11 +59,13 @@ console.table(hashedArray);
 
 // given a hash, return the color that created the hash
 function findColor(hash) {
+  let matchedColor;
   // filter the matching color hash
   for (let i = 0; i < hashedArray.length; i++) {
     if (toHex(hashedArray[i].hash) === toHex(hash)) {
-      return hashedArray[i].color;
+      matchedColor = hashedArray[i].color;
     }
-    return;
   }
+
+  return matchedColor;
 }
