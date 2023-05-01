@@ -55,12 +55,13 @@ const COLORS = ["red", "green", "blue", "yellow", "pink", "orange"];
 const hashedArray = COLORS.map((color) => {
   return { color: color, hash: sha256(utf8ToBytes(color)) };
 });
+console.table(hashedArray);
 
 // given a hash, return the color that created the hash
 function findColor(hash) {
   // filter the matching color hash
   for (let i = 0; i < hashedArray.length; i++) {
-    if (toHex(hashedArray[i].hash) === hash) {
+    if (toHex(hashedArray[i].hash) === toHex(hash)) {
       return hashedArray[i].color;
     }
     return;
