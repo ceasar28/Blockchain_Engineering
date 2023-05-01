@@ -51,7 +51,15 @@ const { toHex, utf8ToBytes } = require("ethereum-cryptography/utils");
 // the possible colors that the hash could represent
 const COLORS = ["red", "green", "blue", "yellow", "pink", "orange"];
 
+  // map throught the colour array and generate hash for each element
+  const hashedArray = COLORS.map((color)=>{
+    return {'color':color,
+'hash':sha256(utf8ToBytes(color))}
+  })
+
 // given a hash, return the color that created the hash
 function findColor(hash) {
-  // map throught the colour array and generate hash for each element
+
+
+  if()
 }
