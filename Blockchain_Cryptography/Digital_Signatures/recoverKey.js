@@ -14,4 +14,6 @@ const hashMessage = require("./hashMessage");
 
 async function recoverKey(message, signature, recoveryBit) {
   const messageHash = await hashMessage(message);
+
+  const publicKey = await recoverPublicKey(messageHash, signature, recoveryBit);
 }
