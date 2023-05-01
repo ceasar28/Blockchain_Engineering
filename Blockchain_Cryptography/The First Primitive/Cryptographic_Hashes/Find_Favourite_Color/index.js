@@ -44,3 +44,12 @@ console.log(toHex(aHash) === toHex(aHash)); // true
 console.log(toHex(aHash) === toHex(bHash)); // false
  Wondering what utf8 stands for? The UTF-8 standard translates all the possible keyboard characters you can think of into bytes. This is an agreed upon standard to ensure we all get the same bit values representing the letters and words we see on the screen. Learn more about utf8 here.
  */
+
+const { sha256 } = require("ethereum-cryptography/sha256");
+const { toHex, utf8ToBytes } = require("ethereum-cryptography/utils");
+
+// the possible colors that the hash could represent
+const COLORS = ["red", "green", "blue", "yellow", "pink", "orange"];
+
+// given a hash, return the color that created the hash
+function findColor(hash) {}
