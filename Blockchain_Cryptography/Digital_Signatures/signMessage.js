@@ -6,6 +6,15 @@ When signing a message with secp256k1 we can return the signature along with the
 
  This is an important point, a blockchain transaction not only indicates the intent of the person who signed it, it also authenticates them through public key cryptography! We'll see this more clearly when start signing transactions in future lessons.
 
+
+ Using options to return a recoveryBit
+The syntax for the third optional parameter of the secp sign function is a little tricky to get right... here's how to properly use the third parameter in order to return a recoveryBit from the signature process - which will later be used to recover a public key using just the messageHash, signature, and recoveryBit:
+
+return secp.sign(messageHash, PRIVATE_KEY, { recovered: true });
+Just include the third paramater in an object that has the recovered key set to true. ✅
+
+
+
  Your Goal: Sign Message
 Let's sign a message!
 
