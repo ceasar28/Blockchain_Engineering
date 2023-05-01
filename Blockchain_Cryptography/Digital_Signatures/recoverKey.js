@@ -8,3 +8,8 @@ Use the noble-secp256k1 library documentation to find the correct method and par
 
 Remember to check version 1.7.1 of the library's documentation!
  */
+
+const secp = require("ethereum-cryptography/secp256k1");
+const hashMessage = require("./hashMessage");
+
+async function recoverKey(message, signature, recoveryBit) {}
