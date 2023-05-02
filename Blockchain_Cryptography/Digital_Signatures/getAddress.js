@@ -17,9 +17,10 @@ const secp = require("ethereum-cryptography/secp256k1");
 const { keccak256 } = require("ethereum-cryptography/keccak");
 
 function getAddress(publicKey) {
-  let Uint8Array = publicKey.slice(4);
+  let Uint8Array = publicKey.slice(1);
+  console.log(Uint8Array)
   const hash = keccak256(Uint8Array);
 
-  const address = hash.slice(-40);
+  const address = hash.slice(-20);
   return address;
 }
