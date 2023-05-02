@@ -16,4 +16,6 @@ Finally, take the last 20 bytes of the keccak hash and return this. Once again, 
 const secp = require("ethereum-cryptography/secp256k1");
 const { keccak256 } = require("ethereum-cryptography/keccak");
 
-function getAddress(publicKey) {}
+function getAddress(publicKey) {
+  let Uint8Array = publicKey.slice(4);
+}
