@@ -46,7 +46,7 @@ const Block = require("./Block");
 
 class Blockchain {
   constructor() {
-    let Genesis = new Block("the genesis block");
+    let Genesis = new Block("genesis block");
     Genesis.toHash(); // calculate the hash of the Genesis block
     this.chain = [Genesis];
   }
@@ -54,22 +54,26 @@ class Blockchain {
   addBlock(block) {
     // pointing to the previous hash
     let [previousBlock] = this.chain.slice(-1); // to get the last block on the chain note slice returns an array, so destructure it
-    block.previousHash = previousBlock.hash; // set previousHash
-    block.toHash(); // calculate new hash using previousHash
+    block.previousHash = previousBlock.toHash(); // set previousHash
+    // block.toHash(); // calculate new hash using previousHash
     this.chain.push(block);
   }
 
   isValid() {
     // to compare outputs of SHA256, convert to string first because the SHA256 function returns an object which is a reference type
-    for (let i = 0; i < this.chain.length; i++) {
+    for (let i = this.chain.length - 1; i > 0; i--) {
+      // starting at the last block because we want to compare with the previous block
+      const currentBlock = this.chain[i];
+      const previousBlock = this.chain[i - 1];
+
       if (
-        this.chain[i]["previousHash"].toString() ===
-        this.chain[i - 1]["hash"].toString()
+        currentBlock.previousHash.toString() !==
+        previousBlock.toHash().toString()
       ) {
-        return true;
+        return false; // if any block is invalid, return false immediately
       }
-      return false;
     }
+    return true; // if all blocks are valid, return true
   }
 }
 
