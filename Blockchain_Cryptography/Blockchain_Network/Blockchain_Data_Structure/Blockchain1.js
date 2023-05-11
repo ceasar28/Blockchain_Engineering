@@ -20,6 +20,10 @@ class Blockchain {
     let Genesis = new Block("the genesis block");
     this.chain = [Genesis];
   }
+
+  addBlock(block) {
+    this.chain.push(block);
+  }
 }
 
 module.exports = Blockchain;
