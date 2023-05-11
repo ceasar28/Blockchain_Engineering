@@ -39,3 +39,22 @@ You can add multiple inputs to the SHA256 function by using the + operator, for 
 const hash = SHA256("dog" + "cat); // hash of dog and cat together
 
  */
+
+const Block = require("./Block");
+
+class Blockchain {
+  constructor() {
+    let Genesis = new Block("the genesis block");
+    this.chain = [Genesis];
+  }
+
+  addBlock(block) {
+    // pointing to the previous hash
+    let [previousBlock] = this.chain.slice(-1); // to get the last block on the chain note slice returns an array, so destructure it
+    block.previousHash = previousBlock.hash; // set previousHash
+    block.toHash(); // calculate new hash using previousHash
+    this.chain.push(block);
+  }
+}
+
+module.exports = Blockchain;
