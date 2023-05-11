@@ -14,3 +14,13 @@ Add a constructor to our Block class that takes one argument data and assigns it
 Once you have added data to the block, use this data to calculate the block's hash in the toHash function!
 
  */
+const SHA256 = require("crypto-js/sha256");
+
+class Block {
+  constructor(data) {
+    this.data = data;
+  }
+  toHash() {
+    return SHA256(this.data);
+  }
+}
