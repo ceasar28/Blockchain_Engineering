@@ -20,3 +20,12 @@ The Blockchain.js file contains the Blockchain class with a chain array. Let's a
 
 Create a new Block in the Blockchain constructor then add it to the chain array.
  */
+
+const Block = require("./Block");
+
+class Blockchain {
+  constructor() {
+    let Genesis = new Block("the genesis block");
+    this.chain = [Genesis];
+  }
+}
