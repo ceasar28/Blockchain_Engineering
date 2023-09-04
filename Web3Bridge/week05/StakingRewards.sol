@@ -1,30 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 
-contract StakingRewards {
+contract StakeRewards {
+    // Tokens
     IERC20 public immutable stakingToken;
     IERC20 public immutable rewardsToken;
 
+    // Owner
     address public owner;
 
-    // Duration of rewards to be paid out (in seconds)
+    // Duration and timing variables
     uint public duration;
-    // Timestamp of when the rewards finish
     uint public finishAt;
-    // Minimum of last updated time and reward finish time
     uint public updatedAt;
-    // Reward to be paid out per second
+
+    // Reward rate and accounting
     uint public rewardRate;
-    // Sum of (reward rate * dt * 1e18 / total supply)
     uint public rewardPerTokenStored;
-    // User address => rewardPerTokenStored
     mapping(address => uint) public userRewardPerTokenPaid;
-    // User address => rewards to be claimed
     mapping(address => uint) public rewards;
 
-    // Total staked
+    // Staking
     uint public totalSupply;
-    // User address => staked amount
     mapping(address => uint) public balanceOf;
 
     constructor(address _stakingToken, address _rewardToken) {
@@ -34,7 +31,7 @@ contract StakingRewards {
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "not authorized");
+        require(msg.sender == owner, "Not authorized");
         _;
     }
 
@@ -51,7 +48,7 @@ contract StakingRewards {
     }
 
     function lastTimeRewardApplicable() public view returns (uint) {
-        return _min(finishAt, block.timestamp);
+        return block.timestamp < finishAt ? block.timestamp : finishAt;
     }
 
     function rewardPerToken() public view returns (uint) {
@@ -59,31 +56,25 @@ contract StakingRewards {
             return rewardPerTokenStored;
         }
 
-        return
-            rewardPerTokenStored +
-            (rewardRate * (lastTimeRewardApplicable() - updatedAt) * 1e18) /
-            totalSupply;
+        return rewardPerTokenStored + (rewardRate * (lastTimeRewardApplicable() - updatedAt) * 1e18) / totalSupply;
     }
 
     function stake(uint _amount) external updateReward(msg.sender) {
-        require(_amount > 0, "amount = 0");
+        require(_amount > 0, "Amount must be greater than 0");
         stakingToken.transferFrom(msg.sender, address(this), _amount);
         balanceOf[msg.sender] += _amount;
         totalSupply += _amount;
     }
 
     function withdraw(uint _amount) external updateReward(msg.sender) {
-        require(_amount > 0, "amount = 0");
+        require(_amount > 0, "Amount must be greater than 0");
         balanceOf[msg.sender] -= _amount;
         totalSupply -= _amount;
         stakingToken.transfer(msg.sender, _amount);
     }
 
     function earned(address _account) public view returns (uint) {
-        return
-            ((balanceOf[_account] *
-                (rewardPerToken() - userRewardPerTokenPaid[_account])) / 1e18) +
-            rewards[_account];
+        return ((balanceOf[_account] * (rewardPerToken() - userRewardPerTokenPaid[_account])) / 1e18) + rewards[_account];
     }
 
     function getReward() external updateReward(msg.sender) {
@@ -95,13 +86,11 @@ contract StakingRewards {
     }
 
     function setRewardsDuration(uint _duration) external onlyOwner {
-        require(finishAt < block.timestamp, "reward duration not finished");
+        require(finishAt < block.timestamp, "Reward duration not finished");
         duration = _duration;
     }
 
-    function notifyRewardAmount(
-        uint _amount
-    ) external onlyOwner updateReward(address(0)) {
+    function notifyRewardAmount(uint _amount) external onlyOwner updateReward(address(0)) {
         if (block.timestamp >= finishAt) {
             rewardRate = _amount / duration;
         } else {
@@ -109,18 +98,11 @@ contract StakingRewards {
             rewardRate = (_amount + remainingRewards) / duration;
         }
 
-        require(rewardRate > 0, "reward rate = 0");
-        require(
-            rewardRate * duration <= rewardsToken.balanceOf(address(this)),
-            "reward amount > balance"
-        );
+        require(rewardRate > 0, "Reward rate must be greater than 0");
+        require(rewardRate * duration <= rewardsToken.balanceOf(address(this)), "Reward amount exceeds balance");
 
         finishAt = block.timestamp + duration;
         updatedAt = block.timestamp;
-    }
-
-    function _min(uint x, uint y) private pure returns (uint) {
-        return x <= y ? x : y;
     }
 }
 
@@ -131,18 +113,11 @@ interface IERC20 {
 
     function transfer(address recipient, uint amount) external returns (bool);
 
-    function allowance(
-        address owner,
-        address spender
-    ) external view returns (uint);
+    function allowance(address owner, address spender) external view returns (uint);
 
     function approve(address spender, uint amount) external returns (bool);
 
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint amount
-    ) external returns (bool);
+    function transferFrom(address sender, address recipient, uint amount) external returns (bool);
 
     event Transfer(address indexed from, address indexed to, uint value);
     event Approval(address indexed owner, address indexed spender, uint value);
