@@ -1,1 +1,1 @@
-# Blockchain course
+# Blockchain Concepts, tutorials and projects 
