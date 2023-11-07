@@ -8,13 +8,17 @@ contract Variable {
     string money;
     bool saved;
 
- function setVariables (int _num,uint _float,string memory _money,bool _saved) public  returns(string memory ){
+function setVariables (int _num,uint _float,string memory _money,bool _saved) public  returns(string memory ){
 num = _num;
 float = _float;
 money = _money;
 saved = _saved;
 
 return "Successfuly set";
+ }
+
+ function getVariables () public view returns(int,uint,string memory, bool){
+    return (num, float, money, saved);
  }
 }
 
