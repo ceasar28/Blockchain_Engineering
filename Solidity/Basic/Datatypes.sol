@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
-
+// there are two types of Datatypes: the reference and value type
 contract DataTypes {
    bool public B = true; // True or false
    uint public U = 1234; // uint = uint256 0 to 2**256 - 1
