@@ -12,4 +12,7 @@ contract DataTypes {
     // to get the maximum value a declared integer can carry
     int public minInt = type(int).min;
     int public maxInt = type(int).max;
+
+    address public myAddress = 0xA9b81Fa3f26D6216E7e6dC2202698b627294Ec48;
+    
 }
