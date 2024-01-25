@@ -1,0 +1,11 @@
+{
+  "name": "Blockchain-Developer-Web3Bridge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MarsIfeanyi/Blockchain-Developer-Web3Bridge.git",
+  "author": "Marcellus Ifeanyi",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.3"
+  }
+}
